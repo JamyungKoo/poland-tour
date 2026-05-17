@@ -1,0 +1,388 @@
+/* ============================================================
+   바르샤바 투어 NAVI — 모바일 우선
+   ============================================================ */
+
+:root {
+  --bg:        #faf8f3;
+  --bg-card:   #ffffff;
+  --bg-walk:   #f1ede2;
+  --bg-tram:   #fff4e1;
+  --ink:       #1a1714;
+  --ink-soft:  #5b5450;
+  --ink-mute:  #908882;
+  --line:      #e6e0d4;
+  --accent:    #b8420a;
+  --accent-soft: #d97350;
+  --visited:   #4a7c4e;
+  --visited-bg: #e8f1e9;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.08);
+  --radius:    12px;
+  --font-serif: ui-serif, Georgia, 'Iowan Old Style', 'Apple Garamond', serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', 'Segoe UI', sans-serif;
+  --bottom-nav-h: 64px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #16130f;
+    --bg-card:   #211c17;
+    --bg-walk:   #2a241c;
+    --bg-tram:   #322820;
+    --ink:       #f0e9dc;
+    --ink-soft:  #b8aea0;
+    --ink-mute:  #807870;
+    --line:      #3a3128;
+    --accent:    #ff8e5c;
+    --accent-soft: #d97350;
+    --visited:   #88c08c;
+    --visited-bg: #1e2a1f;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 14px rgba(0,0,0,0.5);
+  }
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+body {
+  padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom));
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:active { opacity: 0.6; }
+
+/* ====== Header ====== */
+.tour-header {
+  padding: 24px 20px 16px;
+  background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg) 100%);
+  border-bottom: 1px solid var(--line);
+}
+.tour-header .kicker {
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700;
+}
+.tour-header h1 {
+  font-family: var(--font-serif);
+  font-size: 26px; line-height: 1.25;
+  margin: 8px 0 8px;
+}
+.tour-header .subtitle {
+  font-size: 14px; color: var(--ink-soft); margin: 0;
+}
+.tour-meta {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  margin-top: 16px;
+}
+.tour-meta .item {
+  background: var(--bg-card); padding: 10px 8px;
+  border-radius: 8px; text-align: center;
+  border: 1px solid var(--line);
+}
+.tour-meta .val { font-size: 16px; font-weight: 700; color: var(--accent); }
+.tour-meta .key { font-size: 11px; color: var(--ink-mute); }
+
+/* ====== Ticket Guide (펼침 카드) ====== */
+.ticket-card {
+  margin: 0;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--line);
+}
+.ticket-card summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 20px;
+  font-size: 14px; font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
+  color: var(--ink);
+  user-select: none;
+}
+.ticket-card summary::-webkit-details-marker { display: none; }
+.ticket-card summary::after {
+  content: '▾';
+  margin-left: auto;
+  color: var(--ink-mute);
+  transition: transform 0.2s;
+}
+.ticket-card[open] summary::after { transform: rotate(180deg); }
+.ticket-card .ticket-body {
+  padding: 0 20px 20px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+.ticket-card .ticket-body table {
+  width: 100%; border-collapse: collapse;
+  margin: 8px 0 12px;
+  font-size: 13px;
+}
+.ticket-card .ticket-body th,
+.ticket-card .ticket-body td {
+  text-align: left; padding: 6px 4px;
+  border-bottom: 1px solid var(--line);
+}
+.ticket-card .ticket-body th {
+  color: var(--ink-mute); font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.ticket-card .ticket-body td strong { color: var(--ink); }
+.ticket-card .ticket-body .price { font-weight: 700; color: var(--accent); white-space: nowrap; }
+.ticket-card .ticket-body h4 {
+  font-size: 14px; margin: 14px 0 6px;
+  color: var(--ink);
+}
+.ticket-card .ticket-body ul { margin: 6px 0; padding-left: 1.2em; }
+.ticket-card .warning {
+  background: var(--bg-tram);
+  border-left: 3px solid var(--accent);
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 13px;
+  border-radius: 0 6px 6px 0;
+}
+
+/* ====== Progress Bar ====== */
+.progress-bar {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px;
+}
+.progress-bar .track {
+  flex: 1; height: 6px; background: var(--line);
+  border-radius: 999px; overflow: hidden;
+}
+.progress-bar .fill {
+  height: 100%; background: var(--accent); width: 0%;
+  transition: width 0.3s ease;
+}
+.progress-bar .count { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+/* ====== Overview Map (v1) ====== */
+.overview-map {
+  height: 260px;
+  margin: 16px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.overview-map .leaflet-container { background: var(--bg); }
+
+/* ====== Stops ====== */
+main { padding: 0; }
+.stops { display: flex; flex-direction: column; }
+
+.stop {
+  background: var(--bg-card);
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 56px;
+  transition: background 0.3s ease;
+}
+.stop.visited {
+  background: var(--visited-bg);
+}
+
+.stop-photo {
+  margin: 0; position: relative; aspect-ratio: 16 / 10;
+  background: var(--line); overflow: hidden;
+}
+.stop-photo img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.stop-photo .stop-num {
+  position: absolute; top: 12px; left: 12px;
+  background: var(--accent); color: white;
+  font-weight: 700; font-size: 13px;
+  padding: 6px 12px; border-radius: 999px;
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow-sm);
+}
+.stop.extension .stop-photo .stop-num { background: var(--ink-soft); }
+.stop.terminus .stop-photo .stop-num { background: var(--visited); }
+
+.stop-body { padding: 20px; }
+.stop-time {
+  font-size: 12px; color: var(--accent);
+  font-weight: 600; letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.stop-body h2 {
+  font-family: var(--font-serif);
+  font-size: 22px; line-height: 1.3;
+  margin: 4px 0 2px;
+}
+.stop-pl {
+  font-style: italic; color: var(--ink-mute);
+  font-size: 14px; margin-bottom: 14px;
+}
+.stop-body p { margin: 10px 0; font-size: 15.5px; }
+.stop-body ul { margin: 8px 0; padding-left: 1.2em; font-size: 14.5px; color: var(--ink-soft); }
+.stop-body strong { color: var(--ink); }
+
+/* ====== Stop Actions ====== */
+.stop-actions {
+  display: flex; gap: 8px; margin-top: 18px;
+  flex-wrap: wrap;
+}
+.stop-actions button,
+.stop-actions a {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.stop-actions .btn-directions {
+  background: var(--accent); color: white; border-color: var(--accent);
+  flex: 2 1 60%;
+}
+.stop-actions .btn-directions:active { background: var(--accent-soft); }
+.stop-actions .btn-visit {
+  background: var(--bg); color: var(--ink-soft);
+}
+.stop-actions .btn-visit.checked {
+  background: var(--visited); color: white; border-color: var(--visited);
+}
+
+/* ====== Walk Segment ====== */
+.walk {
+  background: var(--bg-walk);
+  padding: 16px 20px;
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 14px; color: var(--ink-soft);
+  border-top: 1px solid var(--line);
+}
+.walk.tram { background: var(--bg-tram); }
+.walk .arrow {
+  flex: 0 0 auto;
+  font-size: 20px; color: var(--accent); font-weight: 700;
+}
+.walk-content { flex: 1; min-width: 0; }
+.walk-mode {
+  display: inline-block;
+  font-size: 12px; font-weight: 700;
+  background: var(--accent); color: white;
+  padding: 3px 9px; border-radius: 999px;
+  margin-bottom: 6px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.walk.tram .walk-mode { background: #c87a1f; }
+.walk-text { line-height: 1.55; }
+.walk-text strong { color: var(--ink); }
+
+/* iframe (v2) */
+.walk-map {
+  margin-top: 12px;
+  border-radius: var(--radius); overflow: hidden;
+  border: 1px solid var(--line);
+}
+.walk-map iframe {
+  width: 100%; height: 260px; border: 0; display: block;
+}
+
+/* ====== Bottom Fixed Nav ====== */
+.bottom-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 100;
+  height: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--bg-card);
+  border-top: 1px solid var(--line);
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+}
+.bottom-nav button {
+  height: var(--bottom-nav-h);
+  background: transparent; border: 0;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  color: var(--ink); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  padding: 0 12px;
+}
+.bottom-nav button:disabled { color: var(--ink-mute); opacity: 0.45; }
+.bottom-nav button .label { font-size: 11px; color: var(--ink-mute); font-weight: 500; }
+.bottom-nav button .target { font-size: 13px; }
+.bottom-nav .center {
+  text-align: center; font-variant-numeric: tabular-nums;
+  font-size: 13px; color: var(--ink-soft);
+  padding: 0 16px;
+}
+.bottom-nav .center .current { font-weight: 700; color: var(--accent); font-size: 18px; }
+
+/* ====== Footer ====== */
+.tour-footer {
+  padding: 24px 20px;
+  background: var(--bg);
+  text-align: center;
+  font-size: 13px; color: var(--ink-mute);
+  border-top: 1px solid var(--line);
+}
+
+/* ====== Index (랜딩) ====== */
+.landing { padding: 32px 20px; max-width: 520px; margin: 0 auto; }
+.landing h1 {
+  font-family: var(--font-serif);
+  font-size: 28px; margin: 0 0 8px;
+}
+.landing .lead { color: var(--ink-soft); font-size: 15px; }
+.version-card {
+  display: block;
+  margin: 16px 0;
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+}
+.version-card:active { transform: scale(0.98); }
+.version-card h3 {
+  font-family: var(--font-serif);
+  font-size: 20px; margin: 0 0 4px;
+  color: var(--accent);
+}
+.version-card .tag {
+  display: inline-block; font-size: 11px;
+  background: var(--accent); color: white;
+  padding: 2px 8px; border-radius: 999px;
+  margin-left: 6px; vertical-align: middle;
+}
+.version-card p { margin: 8px 0 0; font-size: 14px; color: var(--ink-soft); }
+.version-card ul { margin: 10px 0 0; padding-left: 1.2em; font-size: 13.5px; color: var(--ink-soft); }
+
+/* ====== Tablet+ (단순화: 모바일 폭 유지, 양옆 여백) ====== */
+@media (min-width: 720px) {
+  body > .tour-header,
+  body > .progress-bar,
+  body > main,
+  body > .tour-footer {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  body { background: var(--bg-walk); }
+  main { background: var(--bg); }
+  .tour-header { background: var(--bg-card); }
+  .bottom-nav {
+    left: 50%; right: auto;
+    transform: translateX(-50%);
+    width: 100%; max-width: 640px;
+  }
+}
