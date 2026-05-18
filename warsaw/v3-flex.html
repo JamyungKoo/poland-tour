@@ -32,13 +32,23 @@
   <button id="btn-scroll-top" class="btn-scroll-top" aria-label="맨 위로" title="맨 위로">⬆</button>
   <span class="count">0 / 13</span>
   <div class="track"><div class="fill"></div></div>
+  <button id="btn-edit-sheet" class="btn-edit-sheet" aria-label="동선 편집">▼ 동선 편집</button>
   <button id="btn-reset-order" class="btn-reset-order" aria-label="순서 초기화" title="순서·Pass 초기화">↺</button>
 </div>
+
+<div id="sheet-backdrop" class="sheet-backdrop"></div>
+<section id="edit-sheet" class="edit-sheet" aria-label="동선 편집 시트">
+  <div class="sheet-help">
+    <strong>⠿</strong>를 길게 눌러 드래그 · <strong>✕</strong>로 동선 제외 · 변경 시 위 지도가 즉시 갱신됩니다.
+  </div>
+  <div id="sheet-list" class="sheet-list"></div>
+  <button id="btn-close-sheet" class="btn-close-sheet">▲ 닫기</button>
+</section>
 
 <div id="overview-map" class="overview-map" aria-label="전체 루트 지도"></div>
 
 <div style="padding: 10px 16px; font-size: 12px; color: var(--ink-soft); background: var(--bg-card); border-bottom: 1px solid var(--line); line-height: 1.55;">
-  💡 카드 왼쪽 위 <strong>⠿</strong>를 <strong>길게 눌러 드래그</strong>하면 순서 변경. 오른쪽 위 <strong>Pass</strong>는 동선에서 제외. 변경하면 아래 구글 지도 경로가 자동 갱신됩니다.
+  💡 동선 변경은 위 <strong>▼ 동선 편집</strong> 버튼 안에서. 카드 오른쪽 위의 <strong>✕ Pass</strong>로도 정거장을 동선에서 뺄 수 있습니다.
 </div>
 
 <main>
