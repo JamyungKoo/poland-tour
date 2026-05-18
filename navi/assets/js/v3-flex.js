@@ -157,6 +157,7 @@
 
     updateProgress();
     updateMap(slotMap);
+    if (window.V3Flex && window.V3Flex._updateNav) window.V3Flex._updateNav();
   }
 
   function updateProgress() {
@@ -185,16 +186,19 @@
     if (polyline) { map.removeLayer(polyline); polyline = null; }
     markers.forEach((m) => map.removeLayer(m));
     markers = [];
-    const activeAll = order
-      .map((id) => stopMap[id])
-      .filter((s) => !passed.has(s.id));
-    if (activeAll.length === 0) return;
+    const allInOrder = order.map((id) => stopMap[id]);
+    const active = allInOrder.filter((s) => !passed.has(s.id));
+    const passedList = allInOrder.filter((s) => passed.has(s.id));
 
-    polyline = L.polyline(activeAll.map((s) => [s.lat, s.lon]), {
-      color: '#b8420a', weight: 4, opacity: 0.75,
-    }).addTo(map);
+    // 폴리라인: 활성 정거장만 연결
+    if (active.length > 0) {
+      polyline = L.polyline(active.map((s) => [s.lat, s.lon]), {
+        color: '#b8420a', weight: 4, opacity: 0.75,
+      }).addTo(map);
+    }
 
-    activeAll.forEach((s) => {
+    // 활성 마커: 빨강 + 슬롯번호
+    active.forEach((s) => {
       const slot = slotMap.get(s.id) || '?';
       const nameKr = s.nameKr.replace(/\s*—\s*종착\s*$/, '');
       const icon = L.divIcon({
@@ -207,31 +211,45 @@
       markers.push(m);
     });
 
-    if (activeAll.length > 1) {
-      map.fitBounds(polyline.getBounds(), { padding: [20, 20] });
-      // 한 단계 더 줌인
-      const z = map.getZoom();
-      map.setZoom(Math.min(z + 1, 17));
-    } else {
-      map.setView([activeAll[0].lat, activeAll[0].lon], 15);
+    // Pass 마커: 초록 원 (번호 없음, 작게)
+    passedList.forEach((s) => {
+      const nameKr = s.nameKr.replace(/\s*—\s*종착\s*$/, '');
+      const icon = L.divIcon({
+        className: 'stop-marker passed',
+        html: `<div style="background:#4a7c4e;color:white;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;border:2px solid white;box-shadow:0 2px 4px rgba(0,0,0,0.25);opacity:0.85">✓</div>`,
+        iconSize: [22, 22], iconAnchor: [11, 11],
+      });
+      const m = L.marker([s.lat, s.lon], { icon }).addTo(map)
+        .bindPopup(`<strong style="color:#4a7c4e">Pass</strong> · ${nameKr}<br><em style="color:#666;font-size:12px">${s.namePl}</em>`);
+      markers.push(m);
+    });
+
+    // 줌: fitBounds만 (롤백 — setZoom +1 제거)
+    if (active.length > 1) {
+      map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+    } else if (active.length === 1) {
+      map.setView([active[0].lat, active[0].lon], 14);
+    } else if (passedList.length > 0) {
+      const bounds = L.latLngBounds(passedList.map((s) => [s.lat, s.lon]));
+      map.fitBounds(bounds, { padding: [30, 30] });
     }
   }
 
-  // ====== 편집 시트 (Bottom Sheet) ======
+  // ====== 편집 시트 (Bottom Sheet + 미니맵 fixed) ======
   function toggleSheet(forceState) {
     const sheet = document.getElementById('edit-sheet');
     const btn = document.getElementById('btn-edit-sheet');
     const backdrop = document.getElementById('sheet-backdrop');
+    const mapEl = document.getElementById('overview-map');
     if (!sheet) return;
     const open = forceState !== undefined ? forceState : !sheet.classList.contains('open');
     sheet.classList.toggle('open', open);
     if (backdrop) backdrop.classList.toggle('open', open);
+    if (mapEl) mapEl.classList.toggle('floating', open);
+    document.body.classList.toggle('sheet-open', open);
     if (btn) btn.textContent = open ? '▼ 편집 중' : '▼ 동선 편집';
-    if (open) {
-      // 미니맵이 화면 상단에 보이도록 스크롤
-      const mapEl = document.getElementById('overview-map');
-      if (mapEl) mapEl.scrollIntoView({ block: 'start', behavior: 'smooth' });
-    }
+    // Leaflet은 컨테이너 크기가 변하면 invalidateSize 필요
+    if (map) setTimeout(() => map.invalidateSize(), 320);
   }
 
   function setupSheetSortable() {
@@ -302,7 +320,86 @@
     });
   }
 
+  // ====== v3 전용 하단 네비 (슬롯 번호 동기화) ======
+  let currentIdx = 0;
+  function setupV3BottomNav() {
+    const nav = document.querySelector('.bottom-nav');
+    if (!nav) return;
+    const prevBtn = nav.querySelector('.prev');
+    const nextBtn = nav.querySelector('.next');
+    const centerCurrent = nav.querySelector('.center .current');
+    const centerTotal = nav.querySelector('.center .total');
+
+    function updateNav() {
+      const slotMap = buildSlotMap();
+      const allOrdered = order.map((id) => stopMap[id]);
+      const activeStops = allOrdered.filter((s) => !passed.has(s.id));
+      if (centerTotal) centerTotal.textContent = activeStops.length;
+      if (allOrdered.length === 0) return;
+
+      const stop = allOrdered[currentIdx] || allOrdered[0];
+      const prev = currentIdx > 0 ? allOrdered[currentIdx - 1] : null;
+      const next = currentIdx < allOrdered.length - 1 ? allOrdered[currentIdx + 1] : null;
+
+      const slotOf = (s) => {
+        const v = slotMap.get(s.id);
+        return v === null ? '—' : v;
+      };
+      centerCurrent.textContent = slotOf(stop);
+      prevBtn.disabled = !prev;
+      nextBtn.disabled = !next;
+      const fmt = (s) => `${slotOf(s)} ${s.nameKr.replace(/\s*—\s*종착\s*$/, '')}`;
+      prevBtn.querySelector('.target').textContent = prev ? fmt(prev) : '—';
+      nextBtn.querySelector('.target').textContent = next ? fmt(next) : '—';
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIdx > 0) {
+        currentIdx--;
+        const id = order[currentIdx];
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        updateNav();
+      }
+    });
+    nextBtn.addEventListener('click', () => {
+      if (currentIdx < order.length - 1) {
+        currentIdx++;
+        const id = order[currentIdx];
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        updateNav();
+      }
+    });
+
+    // 스크롤로 currentIdx 추적 (viewport 중심에 가까운 카드)
+    let raf = null;
+    function onScroll() {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = null;
+        if (document.body.classList.contains('sheet-open')) return;
+        const cards = Array.from(document.querySelectorAll('#stops-container .v3-stop'));
+        const viewCenter = window.scrollY + window.innerHeight / 2;
+        let bestIdx = 0, bestDist = Infinity;
+        cards.forEach((el, i) => {
+          const rect = el.getBoundingClientRect();
+          const center = rect.top + window.scrollY + rect.height / 2;
+          const dist = Math.abs(center - viewCenter);
+          if (dist < bestDist) { bestDist = dist; bestIdx = i; }
+        });
+        if (bestIdx !== currentIdx) {
+          currentIdx = bestIdx;
+          updateNav();
+        }
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // 렌더 후마다 nav 갱신 (slotMap 변화 반영)
+    window.V3Flex._updateNav = updateNav;
+    updateNav();
+  }
+
   window.V3Flex = {
+    _updateNav: null,
     init() {
       render();
       initMap();
@@ -310,6 +407,7 @@
       setupClickHandlers();
       setupScrollToTop();
       setupReset();
+      setupV3BottomNav();
     },
   };
 })();

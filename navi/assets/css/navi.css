@@ -450,24 +450,46 @@ main { padding: 0; }
 }
 .btn-edit-sheet:active { opacity: 0.7; }
 
-/* Bottom Sheet — 화면 하단에서 슬라이드 업, 미니맵을 가리지 않음 */
+/* Bottom Sheet — 화면 하단에서 슬라이드 업 (최상단 z-index) */
 .edit-sheet {
   position: fixed;
   left: 0; right: 0; bottom: 0;
-  z-index: 200;
+  z-index: 9999;
   background: var(--bg-card);
   border-top: 1px solid var(--line);
   border-radius: 18px 18px 0 0;
   box-shadow: 0 -10px 30px rgba(0,0,0,0.25);
   transform: translateY(100%);
   transition: transform 0.3s ease;
-  max-height: 65vh;
+  max-height: 55vh;
   display: flex; flex-direction: column;
   padding: 0 16px;
   padding-bottom: env(safe-area-inset-bottom);
 }
 .edit-sheet.open {
   transform: translateY(0);
+}
+
+/* 시트 열린 동안 미니맵을 화면 상단에 고정 (Leaflet의 position: relative 덮어씀) */
+.overview-map.floating {
+  position: fixed !important;
+  top: 0; left: 0; right: 0;
+  z-index: 9998 !important;
+  height: 40vh;
+  background: var(--bg);
+  border-bottom: 2px solid var(--line);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+body.sheet-open {
+  overflow: hidden;
+  touch-action: none;
+}
+@media (min-width: 720px) {
+  .overview-map.floating {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%; max-width: 640px;
+  }
 }
 .edit-sheet::before {
   content: '';
@@ -558,16 +580,16 @@ main { padding: 0; }
   cursor: pointer; font-family: inherit;
   flex: 0 0 auto;
 }
-/* 시트가 떠 있을 때 본문 위 살짝 어둡게 (선택) */
+/* 시트가 떠 있을 때 본문 위 어둡게 (미니맵·시트 사이 빈 곳) */
 .sheet-backdrop {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0);
-  z-index: 150;
+  z-index: 9997;
   pointer-events: none;
   transition: background 0.3s ease;
 }
 .sheet-backdrop.open {
-  background: rgba(0,0,0,0.15);
+  background: rgba(0,0,0,0.4);
   pointer-events: auto;
 }
 
@@ -592,7 +614,7 @@ main { padding: 0; }
   border: 1px solid var(--line);
 }
 .v3-walk .walk-map iframe {
-  width: 100%; height: 220px; border: 0; display: block;
+  width: 100%; height: 300px; border: 0; display: block;
 }
 
 /* ====== Tablet+ (단순화: 모바일 폭 유지, 양옆 여백) ====== */
