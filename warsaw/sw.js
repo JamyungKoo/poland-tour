@@ -1,19 +1,22 @@
 // Service Worker — 오프라인 캐시 (Cache-First, network-fallback)
-const CACHE_VERSION = 'warsaw-tour-v3';
+const CACHE_VERSION = 'warsaw-tour-v4';
 const CORE_ASSETS = [
   './',
   './index.html',
   './v1-leaflet.html',
   './v2-embed.html',
+  './v3-flex.html',
   './manifest.json',
   './stops-data.js',
   '../navi/assets/css/navi.css',
   '../navi/assets/js/navi-core.js',
   '../navi/assets/js/v1-leaflet.js',
+  '../navi/assets/js/v3-flex.js',
   '../navi/assets/icons/icon-192.png',
   '../navi/assets/icons/icon-512.png',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
+  'https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js',
 ];
 
 self.addEventListener('install', (event) => {
