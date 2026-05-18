@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#b8420a">
-<title>바르샤바 가이드 투어 (v3 · 유연한 동선)</title>
-<meta name="description" content="드래그로 순서 변경, Pass로 건너뛰기. 구글 지도 임베드 자동 재계산.">
-<link rel="stylesheet" href="../../navi/assets/css/navi.css">
+<title>바르샤바 가이드 투어</title>
+<meta name="description" content="중앙역에서 게토 영웅 추모비까지 도보 6km · 13정거장. 드래그로 순서 변경, Pass로 건너뛰기.">
+<link rel="stylesheet" href="../navi/assets/css/navi.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="../../navi/assets/icons/icon-192.png">
-<link rel="icon" type="image/png" href="../../navi/assets/icons/icon-192.png">
+<link rel="manifest" href="../manifest.json">
+<link rel="apple-touch-icon" href="../navi/assets/icons/icon-192.png">
+<link rel="icon" type="image/png" href="../navi/assets/icons/icon-192.png">
 </head>
 <body>
 
 <header class="tour-header">
-  <div class="kicker">Lecture 06 · Flex Tour</div>
+  <div class="kicker">Lecture 06 · Warsaw</div>
   <h1></h1>
   <p class="subtitle"></p>
   <div class="tour-meta">
@@ -56,8 +56,8 @@
 </main>
 
 <footer class="tour-footer">
-  <p>폴란드 교양강의 6회차 · 바르샤바 도보 투어 · <strong>v3 Flex</strong></p>
-  <p><a href="index.html">← 버전 비교</a> · <a href="v1-leaflet.html">v1</a> · <a href="v2-embed.html">v2</a></p>
+  <p>폴란드 교양강의 6회차 · 바르샤바 도보 투어</p>
+  <p><a href="./">← 도시 선택으로</a></p>
 </footer>
 
 <nav class="bottom-nav" aria-label="정거장 네비게이션">
@@ -72,9 +72,9 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
-<script src="stops-data.js"></script>
-<script src="../../navi/assets/js/navi-core.js"></script>
-<script src="../../navi/assets/js/v3-flex.js"></script>
+<script src="warsaw/stops-data.js"></script>
+<script src="../navi/assets/js/navi-core.js"></script>
+<script src="../navi/assets/js/v3-flex.js"></script>
 <script>
   (function () {
     const { NaviCore } = window;
@@ -84,7 +84,7 @@
   })();
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch((e) => console.warn('SW failed:', e));
+      navigator.serviceWorker.register('../sw.js', { scope: '/poland-tour/' }).catch((e) => console.warn('SW failed:', e));
     });
   }
 </script>

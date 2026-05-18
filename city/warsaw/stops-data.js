@@ -14,7 +14,7 @@ window.TOUR_DATA = {
       time: '출발 · 0:00', stay: null,
       nameKr: '바르샤바 중앙역', namePl: 'Warszawa Centralna',
       lat: 52.2288207, lon: 21.0031600,
-      image: 'images/01-centralna-station.png',
+      image: 'warsaw/images/01-centralna-station.png',
       paragraphs: [
         '1975년 개관한 바르샤바 중앙역. 사회주의 시기 건축의 대표작 중 하나로, 당시 동구권에서 가장 현대적인 역으로 평가받았다. 폴란드 국내 모든 주요 도시(크라쿠프·그단스크·브로츠와프)로 가는 기차의 출발점.',
         '한국에서 비행기로 도착한 첫 여행자라면 공항에서 도심으로 들어와 가장 먼저 거치는 자리이기도 하다. <strong>여기서부터 우리의 6km가 시작된다.</strong>',
@@ -26,7 +26,7 @@ window.TOUR_DATA = {
       time: '0:10', stay: '약 15분',
       nameKr: '문화과학궁전 (PKiN)', namePl: 'Pałac Kultury i Nauki',
       lat: 52.2317657, lon: 21.0057979,
-      image: 'images/02-palace-culture.jpg',
+      image: 'warsaw/images/02-palace-culture.jpg',
       paragraphs: [
         '5회차에서 본 <strong>스탈린의 "선물"</strong>. 1955년 개관, 높이 237m, 30층. 모스크바 7자매 마천루의 폴란드 동생이다. 폴란드인들에게는 <em>"받지 않을 수 없었던 선물"</em>이라는 무게가 실린 건물.',
         '현재는 콘서트홀·박물관·시계대·전망대 등으로 사용된다. 30층 전망대에서는 바르샤바 시내를 360도로 볼 수 있다 — <em>"이 도시에서 가장 좋은 전망. 여기서는 문화과학궁전이 안 보이니까."</em>',
@@ -39,7 +39,7 @@ window.TOUR_DATA = {
       time: '0:30', stay: '약 10분',
       nameKr: '사스키 광장 · 무명용사의 묘', namePl: 'Plac Piłsudskiego · Grób Nieznanego Żołnierza',
       lat: 52.2409328, lon: 21.0113096,
-      image: 'images/03-unknown-soldier.jpg',
+      image: 'warsaw/images/03-unknown-soldier.jpg',
       paragraphs: [
         '광장의 가장 깊은 자리에 <strong>무명용사의 묘</strong>가 있다. 1925년 건립, 1944년 파괴, 1946년 재건. 양옆에 의장대가 24시간 부동자세로 서 있고, 매시간 정각에 교대식이 있다.',
         '묘 뒤로 보이는 — 또는 보이지 않는 — 빈 자리는 1944년까지 거기 있던 <strong>사스키 궁전</strong>(Pałac Saski)의 자리다. 18세기 폴란드 왕실의 거처 중 하나였고 1944년 봉기 후 완전히 파괴되었다. 현재까지 재건되지 않은 상태로, 광장의 빈 면적 자체가 <strong>"잃어버린 도시"의 흔적</strong>이다.',
@@ -52,7 +52,7 @@ window.TOUR_DATA = {
       time: '0:45', stay: '약 15분',
       nameKr: '사스키 정원', namePl: 'Ogród Saski',
       lat: 52.2407099, lon: 21.0085004,
-      image: 'images/04-saxon-garden.jpg',
+      image: 'warsaw/images/04-saxon-garden.jpg',
       paragraphs: [
         '1727년 개방된 <strong>폴란드 최초의 공공 정원</strong>. 베르사유 양식의 바로크 정원으로 시작했고, 19세기에 영국식으로 개조되었다. 2차 대전 때 부분 파괴되었으나 분수와 조각 일부가 살아남았다.',
         '분수가 있는 중앙 광장에서 잠깐 쉬어가기 좋다. 강의 흐름상 — 4회까지의 폴란드 전체에서 — 5회의 바르샤바로 들어와 마침내 6회의 발걸음이 시작된 자리.',
@@ -65,7 +65,7 @@ window.TOUR_DATA = {
       time: '0:55', stay: '약 10분',
       nameKr: '바르샤바 대학', namePl: 'Uniwersytet Warszawski',
       lat: 52.2406625, lon: 21.0202847,
-      image: 'images/06-uw-gate.jpg',
+      image: 'warsaw/images/06-uw-gate.jpg',
       paragraphs: [
         '1816년 설립된 폴란드 최대 종합대학. 정문은 폴란드 국장의 두 마리 독수리가 위에 올라가 있는 신고전주의 양식. 정문을 통과해 들어가면 18–19세기 건물들이 둘러싼 작은 캠퍼스가 펼쳐진다.',
         '이 대학과 폴란드 역사의 한 연결고리 — 1830·1863 두 봉기, 1968년 3월 학생 시위가 모두 이 자리에서 시작되었다. 폴란드 지식인의 역사가 가장 길게 묶여 있는 자리.',
@@ -78,7 +78,7 @@ window.TOUR_DATA = {
       time: '1:08', stay: '약 15분',
       nameKr: '성 십자가 교회 — 쇼팽의 심장', namePl: 'Kościół Świętego Krzyża',
       lat: 52.2387357, lon: 21.0167603,
-      image: 'images/07-chopin-heart.jpg',
+      image: 'warsaw/images/07-chopin-heart.jpg',
       paragraphs: [
         '17세기에 세워진 바로크 교회. 1944년 봉기 때 거의 완전히 파괴되었다 1950년대 재건. 그러나 이 교회가 폴란드인에게 특별한 자리인 이유는 — <strong>3회차에서 본 쇼팽의 심장이 이 교회의 한 기둥 안에 안치되어 있다</strong>는 것이다.',
         '1849년 파리에서 39세에 죽은 쇼팽의 누이 루드비카가 그의 유언대로 심장을 코냑 항아리에 담아 바르샤바로 가져왔다. 1880년 이 교회의 본당 왼쪽 두 번째 기둥에 안치되었다. 1939년 폴란드 침공 때 임시 이송되었다가 점령기에 — 놀랍게도 — 독일군이 폴란드 추기경에게 돌려주었고, 1945년 다시 같은 기둥에 안치되어 지금까지 있다.',
@@ -92,7 +92,7 @@ window.TOUR_DATA = {
       time: '1:25', stay: '약 10분',
       nameKr: '코페르니쿠스 동상', namePl: 'Pomnik Mikołaja Kopernika',
       lat: 52.2381578, lon: 21.0179739,
-      image: 'images/05-copernicus-monument.jpg',
+      image: 'warsaw/images/05-copernicus-monument.jpg',
       paragraphs: [
         '3회차의 그 폴란드인 — <strong>니콜라우스 코페르니쿠스</strong>(1473–1543). 그의 손에 든 것이 천구의 모형. 무릎 위의 책 표지에는 라틴어로 — <em>"태양은 정지하고 지구가 움직인다"</em>.',
         '이 동상은 1830년 덴마크 조각가 <strong>베르텔 토르발센(Bertel Thorvaldsen)</strong>이 제작한 것이다. 1944년 독일군이 떼어 가려 했으나 실패했고, 종전 직후 그 자리에 돌아왔다. 받침대의 라틴어 비문 — <em>"NICOLAO COPERNICO GRATA PATRIA"</em>("니콜라우스 코페르니쿠스에게, 감사하는 조국이") — 은 폴란드인이 외우는 한 줄.',
@@ -105,7 +105,7 @@ window.TOUR_DATA = {
       time: '1:42', stay: '약 30분 (점심 옵션)',
       nameKr: '노비 시비아트 거리', namePl: 'Nowy Świat',
       lat: 52.2335846, lon: 21.0190384,
-      image: 'images/08-nowy-swiat.jpg',
+      image: 'warsaw/images/08-nowy-swiat.jpg',
       paragraphs: [
         '"새로운 세계"라는 이름의 거리. 17세기 시 외곽의 새로운 동네에서 시작해, 19세기에 바르샤바에서 가장 화려한 상점가가 되었다. 카페·서점·갤러리가 모인 도시의 사교 중심이었다.',
         '1944년 거의 완전히 파괴되었고, 1949년 재건. 다만 사회주의 시기 정부는 — 19세기 거리의 화려함을 약간 누그러뜨려 — 더 단순한 양식으로 재건했다. 그래서 노비 시비아트는 <strong>"진짜 옛 거리"와 "재건된 옛 거리" 사이의 흥미로운 중간 단계</strong>를 보여준다.',
@@ -118,7 +118,7 @@ window.TOUR_DATA = {
       time: '2:32', stay: '약 10분',
       nameKr: '왕궁 광장 · 지그문트 기둥', namePl: 'Plac Zamkowy · Kolumna Zygmunta',
       lat: 52.2472529, lon: 21.0133793,
-      image: 'images/09-zygmunt-column.jpg',
+      image: 'warsaw/images/09-zygmunt-column.jpg',
       paragraphs: [
         '구시가지로 들어가는 입구의 큰 광장. 가운데 22m 높이의 <strong>지그문트 3세 기둥</strong>이 솟아 있다. 1644년 그의 아들이 아버지를 기리며 세운 것 — 5회차에서 본, 1596년 수도를 바르샤바로 옮긴 그 왕이다.',
         '광장의 동쪽 면이 통째로 <strong>바르샤바 왕궁</strong>의 정면. 그 너머 더 동쪽은 비스와 강. 광장 자체는 1944년 봉기 후 완전히 파괴되었고, 지그문트 기둥도 부서졌으나 1949년 재건되었다.',
@@ -131,7 +131,7 @@ window.TOUR_DATA = {
       time: '2:45', stay: '약 30분 (내부 관람 시 +1h)',
       nameKr: '바르샤바 왕궁', namePl: 'Zamek Królewski w Warszawie',
       lat: 52.2479003, lon: 21.0152802,
-      image: 'images/10-royal-castle.jpg',
+      image: 'warsaw/images/10-royal-castle.jpg',
       paragraphs: [
         '14세기 시작, 17세기 지그문트 3세 시기에 폴란드 왕실의 정식 거처로 자리잡은 왕궁. 5회차에서 본 그 운명 — 1944년 봉기 후 독일군에 의해 완전히 폭파, 1971년부터 시민 모금으로 재건 시작, 1984년 외관 완성, 1988년 내부 복원 완료. 폴란드 재건의 가장 늦은, 그러나 가장 상징적인 사례.',
         '내부 관람은 시간 여유가 있을 때만(2층 왕실 거주 공간, 천장화, 17–18세기 폴란드 회화). 1시간 + 추가. 외관과 광장만 보고 다음 정거장으로 가도 충분하다.',
@@ -144,7 +144,7 @@ window.TOUR_DATA = {
       time: '3:20', stay: '약 30분',
       nameKr: '구시가지 광장 · 인어상', namePl: 'Rynek Starego Miasta · Syrenka',
       lat: 52.2497952, lon: 21.0117988,
-      image: 'images/11-mermaid.jpg',
+      image: 'warsaw/images/11-mermaid.jpg',
       paragraphs: [
         '5회차에서 본 <strong>재건의 정점</strong>. 사방에 둘러선 17세기풍 컬러풀한 건물들 — 거의 모두 1950년대에 18세기 카날레토의 그림을 토대로 재건된 것이다. 광장 중앙에 <strong>바르샤바의 상징인 인어상(Syrenka)</strong>이 칼과 방패를 들고 서 있다.',
         '광장 사면이 각각 다른 이름의 면(side)이다 — 자크로츠 위의 면(Strona Zakrzewskiego), 데클레르토프스카 면(Strona Dekerta), 콜레만 면(Strona Kollątaja), 바르스 면(Strona Barssa). 각 면 끝의 모서리 건물에 — 오래된 폴란드 식당과 카페 — <strong>Restauracja U Fukiera</strong>, <strong>U Barssa</strong> 등이 있다. 잠깐 커피 한 잔 가능.',
@@ -157,7 +157,7 @@ window.TOUR_DATA = {
       time: '3:55', stay: '약 15분',
       nameKr: '바르비칸 · 신 시가지', namePl: 'Barbakan · Nowe Miasto',
       lat: 52.2506074, lon: 21.0103461,
-      image: 'images/12-barbican.jpg',
+      image: 'warsaw/images/12-barbican.jpg',
       paragraphs: [
         '<strong>바르비칸(Barbakan)</strong>은 16세기에 세워진 구시가지의 북쪽 방어 시설. 1944년 부분 파괴되었고 1950년대 재건. 옛 성벽 위를 잠깐 걸을 수 있는 자리이기도 하다.',
         '바르비칸을 통과하면 — 이름과 달리 — 또 다른 옛 구역이 펼쳐진다. <strong>신 시가지(Nowe Miasto)</strong>. 15세기 구시가지 인구가 늘면서 그 북쪽에 만들어진 "신(新) 시가지"인데, 이미 500년이 지나 오늘날에는 "신"이 무색하다.',
@@ -170,7 +170,7 @@ window.TOUR_DATA = {
       time: '4:25', stay: '약 20분',
       nameKr: '게토 영웅 추모비 — 종착', namePl: 'Pomnik Bohaterów Getta',
       lat: 52.2497446, lon: 20.9942223,
-      image: 'images/14-ghetto-monument.jpg',
+      image: 'warsaw/images/14-ghetto-monument.jpg',
       paragraphs: [
         '5회차에서 본 — 1948년 나탄 라파포트가 만든 — <strong>게토 영웅 추모비</strong>. 옛 바르샤바 게토의 한가운데, 1943년 4월 게토 봉기가 시작된 자리. 비의 무라누프 지구는 — 한 도시가 다른 도시의 무덤 위에 세워진 — 거의 유일한 자리이고, 이 추모비가 그 도시 위에 서 있다.',
         '그리고 — 이 추모비의 의미를 결정짓는 한 장면이 있다. <strong>1970년 12월 7일, 서독 총리 빌리 브란트가 이 추모비 앞에서 무릎을 꿇었다.</strong> 폴란드와 독일의 전후 화해사의 한 페이지가 된 사진. 현재 광장 반대편에 그 순간을 새긴 기념판이 있다.',
@@ -184,7 +184,7 @@ window.TOUR_DATA = {
       time: '옵션 · 추가 2–3시간', stay: null,
       nameKr: '바르샤바 봉기 박물관', namePl: 'Muzeum Powstania Warszawskiego',
       lat: 52.2321024, lon: 20.9813775,
-      image: 'images/15-uprising-museum.jpg',
+      image: 'warsaw/images/15-uprising-museum.jpg',
       paragraphs: [
         '5회차에서 본 — 2004년 봉기 60주년에 개관한 — 박물관. 게토 추모비에서 서쪽으로 약 2km, 또는 트램·버스 약 15분. 옛 발전소 건물을 개조했고, <strong>63일의 봉기를 시간순으로 따라가는</strong> 전시가 강렬하다.',
         '왜 종착 다음에 봉기 박물관인가 — 5회차에서 본 그 무게가 게토 봉기(1943)와 도시 봉기(1944) 두 차례라는 것을 기억하면, 추모비(게토 봉기) → 박물관(도시 봉기)로 이어지는 흐름이 자연스럽다. 이 두 자리를 같은 날 묶으면 폴란드 20세기의 가장 깊은 자리 둘을 함께 만지는 셈이다.',

@@ -7,6 +7,7 @@
 <title>폴란드 셀프 가이드 투어</title>
 <meta name="description" content="폴란드 도시별 도보 가이드 투어 — 바르샤바, 크라쿠프, 자코파네.">
 <link rel="stylesheet" href="../navi/assets/css/navi.css">
+<link rel="manifest" href="../manifest.json">
 <link rel="apple-touch-icon" href="../navi/assets/icons/icon-192.png">
 <link rel="icon" type="image/png" href="../navi/assets/icons/icon-192.png">
 </head>
@@ -17,7 +18,7 @@
   <h1>폴란드 셀프 가이드 투어</h1>
   <p class="lead">현장에서 폰 한 손으로 따라가는 도시별 도보 투어. 드래그로 동선 자유 편집, 구글 지도 길찾기 자동 연결.</p>
 
-  <a class="version-card" href="warsaw/">
+  <a class="version-card" href="warsaw.html">
     <h3>바르샤바 <span class="tag">수도</span></h3>
     <p>중앙역에서 게토 영웅 추모비까지 도보 6km · <strong>13정거장</strong>. 왕의 길 + 구시가지 + 게토 자리. <em>폴란드 교양강의 6회차 기준.</em></p>
     <ul>
@@ -27,7 +28,7 @@
     </ul>
   </a>
 
-  <a class="version-card" href="krakow/">
+  <a class="version-card" href="krakow.html">
     <h3>크라쿠프 <span class="tag">옛 수도</span></h3>
     <p>중앙역에서 쉰들러 공장까지 도보 6km · <strong>12정거장</strong>. 왕의 길 + 바벨 + 카지미에시 + 포드구제. <em>폴란드 교양강의 8회차 기준.</em></p>
     <ul>
@@ -37,7 +38,7 @@
     </ul>
   </a>
 
-  <a class="version-card" href="zakopane/" style="opacity: 0.65;">
+  <a class="version-card" href="zakopane.html" style="opacity: 0.65;">
     <h3>자코파네 <span class="tag" style="background: var(--ink-mute);">준비 중</span></h3>
     <p>폴란드 남부 타트라 산맥 기슭의 산악 휴양지. 정거장 데이터 추가 예정.</p>
     <ul>
@@ -58,5 +59,12 @@
   </div>
 </div>
 
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('../sw.js', { scope: '/poland-tour/' }).catch((e) => console.warn('SW failed:', e));
+    });
+  }
+</script>
 </body>
 </html>
