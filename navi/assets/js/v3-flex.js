@@ -30,14 +30,12 @@
   };
 
   // ====== 슬롯 번호 계산 ======
-  // 활성 정거장(Pass 안 된)에 1~N 슬롯 번호 부여. 확장(+1)은 별도. Pass된 건 null.
+  // 활성 정거장(Pass 안 된)에 1~N 슬롯 번호 부여. Pass된 건 null. extension도 일반 슬롯.
   function buildSlotMap() {
     const map = new Map();
     let slot = 1;
     for (const id of order) {
-      const stop = stopMap[id];
       if (passed.has(id)) { map.set(id, null); continue; }
-      if (stop.extension) { map.set(id, '+1'); continue; }
       map.set(id, String(slot).padStart(2, '0'));
       slot++;
     }
@@ -45,9 +43,7 @@
   }
   function slotLabel(stop, slotMap) {
     const v = slotMap.get(stop.id);
-    if (v === null) return '—';
-    if (v === '+1') return '+1';
-    return v;
+    return v === null ? '—' : v;
   }
 
   // ====== 본문 카드 ======
@@ -58,17 +54,16 @@
     article.id = stop.id;
     if (passed.has(stop.id)) article.classList.add('passed');
     if (visited.has(stop.id)) article.classList.add('visited');
-    if (stop.terminus && !passed.has(stop.id)) article.classList.add('terminus');
-    if (stop.extension) article.classList.add('extension');
 
     const dirUrl = window.NaviCore.googleMapsDirections(
       prevActive ? prevActive.lat : null,
       prevActive ? prevActive.lon : null,
       stop.lat, stop.lon, stop.nameKr
     );
+    const placeUrl = window.NaviCore.googleMapsPlace(stop.lat, stop.lon, stop.namePl);
     const slot = slotLabel(stop, slotMap);
     const isPassed = passed.has(stop.id);
-    const slotSuffix = !isPassed && stop.terminus ? ' · 종착' : '';
+    const nameKr = stop.nameKr.replace(/\s*—\s*종착\s*$/, '');
 
     article.innerHTML = `
       <div class="stop-toolbar">
@@ -77,16 +72,17 @@
         </button>
       </div>
       <figure class="stop-photo">
-        <span class="stop-num">${slot}${slotSuffix}</span>
-        <img src="${stop.image}" alt="${stop.nameKr}" loading="lazy">
+        <span class="stop-num">${slot}</span>
+        <img src="${stop.image}" alt="${nameKr}" loading="lazy">
       </figure>
       <div class="stop-body">
         <div class="stop-time">${stop.time}${stop.stay ? ' · 머무는 시간 ' + stop.stay : ''}</div>
-        <h2>${stop.nameKr}</h2>
+        <h2>${nameKr}</h2>
         <div class="stop-pl">${stop.namePl}</div>
         ${stop.paragraphs.map((p) => `<p>${p}</p>`).join('')}
         <div class="stop-actions">
           <a class="btn-directions" href="${dirUrl}" target="_blank" rel="noopener">🗺️ 구글 지도 길찾기</a>
+          <a class="btn-place" href="${placeUrl}" target="_blank" rel="noopener" title="장소만 보기">📍</a>
           <button class="btn-visit ${visited.has(stop.id) ? 'checked' : ''}" data-stop-id="${stop.id}">
             ${visited.has(stop.id) ? '✓ 방문함' : '☐ 방문'}
           </button>
@@ -120,10 +116,11 @@
     row.dataset.stopId = stop.id;
     if (passed.has(stop.id)) row.classList.add('passed');
     const slot = slotLabel(stop, slotMap);
+    const nameKr = stop.nameKr.replace(/\s*—\s*종착\s*$/, '');
     row.innerHTML = `
       <span class="sheet-handle" aria-label="드래그">⠿</span>
       <span class="sheet-num">${slot}</span>
-      <span class="sheet-name">${stop.nameKr}</span>
+      <span class="sheet-name">${nameKr}</span>
       <button class="sheet-pass" data-stop-id="${stop.id}" aria-label="동선에서 제외/포함">
         ${passed.has(stop.id) ? '↶' : '✕'}
       </button>
@@ -163,15 +160,15 @@
   }
 
   function updateProgress() {
-    const activeMain = order
+    const activeAll = order
       .map((id) => stopMap[id])
-      .filter((s) => !s.extension && !passed.has(s.id));
-    const done = activeMain.filter((s) => visited.has(s.id));
-    const pct = activeMain.length ? Math.round((done.length / activeMain.length) * 100) : 0;
+      .filter((s) => !passed.has(s.id));
+    const done = activeAll.filter((s) => visited.has(s.id));
+    const pct = activeAll.length ? Math.round((done.length / activeAll.length) * 100) : 0;
     const fillEl = document.querySelector('.progress-bar .fill');
     const countEl = document.querySelector('.progress-bar .count');
     if (fillEl) fillEl.style.width = pct + '%';
-    if (countEl) countEl.textContent = `${done.length} / ${activeMain.length}`;
+    if (countEl) countEl.textContent = `${done.length} / ${activeAll.length}`;
   }
 
   // ====== Leaflet ======
@@ -188,33 +185,35 @@
     if (polyline) { map.removeLayer(polyline); polyline = null; }
     markers.forEach((m) => map.removeLayer(m));
     markers = [];
-    const activeMain = order
+    const activeAll = order
       .map((id) => stopMap[id])
-      .filter((s) => !s.extension && !passed.has(s.id));
-    if (activeMain.length === 0) return;
+      .filter((s) => !passed.has(s.id));
+    if (activeAll.length === 0) return;
 
-    polyline = L.polyline(activeMain.map((s) => [s.lat, s.lon]), {
+    polyline = L.polyline(activeAll.map((s) => [s.lat, s.lon]), {
       color: '#b8420a', weight: 4, opacity: 0.75,
     }).addTo(map);
 
-    activeMain.forEach((s) => {
-      const isLast = s === activeMain[activeMain.length - 1];
-      const color = isLast ? '#4a7c4e' : '#b8420a';
-      const slot = slotMap.get(s.id) || s.num;
+    activeAll.forEach((s) => {
+      const slot = slotMap.get(s.id) || '?';
+      const nameKr = s.nameKr.replace(/\s*—\s*종착\s*$/, '');
       const icon = L.divIcon({
         className: 'stop-marker',
-        html: `<div style="background:${color};color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)">${slot}</div>`,
+        html: `<div style="background:#b8420a;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)">${slot}</div>`,
         iconSize: [28, 28], iconAnchor: [14, 14],
       });
       const m = L.marker([s.lat, s.lon], { icon }).addTo(map)
-        .bindPopup(`<strong>${slot}. ${s.nameKr}</strong><br><em style="color:#666;font-size:12px">${s.namePl}</em>`);
+        .bindPopup(`<strong>${slot}. ${nameKr}</strong><br><em style="color:#666;font-size:12px">${s.namePl}</em>`);
       markers.push(m);
     });
 
-    if (activeMain.length > 1) {
-      map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+    if (activeAll.length > 1) {
+      map.fitBounds(polyline.getBounds(), { padding: [20, 20] });
+      // 한 단계 더 줌인
+      const z = map.getZoom();
+      map.setZoom(Math.min(z + 1, 17));
     } else {
-      map.setView([activeMain[0].lat, activeMain[0].lon], 14);
+      map.setView([activeAll[0].lat, activeAll[0].lon], 15);
     }
   }
 

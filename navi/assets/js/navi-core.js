@@ -284,5 +284,6 @@
     data,
     visited,
     googleMapsDirections,
+    googleMapsPlace,
   };
 })();

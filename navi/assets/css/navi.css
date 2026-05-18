@@ -267,11 +267,22 @@ main { padding: 0; }
 }
 .stop-actions .btn-directions {
   background: var(--accent); color: white; border-color: var(--accent);
-  flex: 2 1 60%;
+  flex: 3 1 0;
+  padding: 0 10px;
+  font-size: 13px;
 }
 .stop-actions .btn-directions:active { background: var(--accent-soft); }
+.stop-actions .btn-place {
+  flex: 0 0 44px;
+  min-width: 44px; padding: 0;
+  font-size: 18px;
+  text-decoration: none;
+}
 .stop-actions .btn-visit {
   background: var(--bg); color: var(--ink-soft);
+  flex: 2 1 0;
+  padding: 0 8px;
+  font-size: 13px;
 }
 .stop-actions .btn-visit.checked {
   background: var(--visited); color: white; border-color: var(--visited);
