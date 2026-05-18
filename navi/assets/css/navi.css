@@ -557,6 +557,7 @@ body.sheet-open {
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   color: var(--ink);
 }
+.sheet-visit,
 .sheet-pass {
   flex: 0 0 auto;
   width: 32px; height: 32px;
@@ -567,7 +568,9 @@ body.sheet-open {
   cursor: pointer;
   font-family: inherit; font-size: 14px;
 }
+.sheet-row.visited .sheet-visit { background: var(--visited); color: white; border-color: var(--visited); }
 .sheet-row.passed .sheet-pass { background: var(--accent); color: white; border-color: var(--accent); }
+.sheet-row.passed .sheet-visit { opacity: 0.4; pointer-events: none; }
 .btn-close-sheet {
   width: 100%;
   margin: 10px 0;

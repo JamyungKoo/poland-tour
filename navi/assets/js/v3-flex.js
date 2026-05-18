@@ -115,13 +115,17 @@
     row.className = 'sheet-row';
     row.dataset.stopId = stop.id;
     if (passed.has(stop.id)) row.classList.add('passed');
+    if (visited.has(stop.id)) row.classList.add('visited');
     const slot = slotLabel(stop, slotMap);
     const nameKr = stop.nameKr.replace(/\s*—\s*종착\s*$/, '');
     row.innerHTML = `
       <span class="sheet-handle" aria-label="드래그">⠿</span>
       <span class="sheet-num">${slot}</span>
       <span class="sheet-name">${nameKr}</span>
-      <button class="sheet-pass" data-stop-id="${stop.id}" aria-label="동선에서 제외/포함">
+      <button class="sheet-visit" data-stop-id="${stop.id}" aria-label="방문함 토글" title="방문함">
+        ${visited.has(stop.id) ? '✓' : '☐'}
+      </button>
+      <button class="sheet-pass" data-stop-id="${stop.id}" aria-label="동선에서 제외/포함" title="${passed.has(stop.id) ? '복귀' : '동선 제외'}">
         ${passed.has(stop.id) ? '↶' : '✕'}
       </button>
     `;
@@ -268,17 +272,28 @@
         render();
         return;
       }
-      const visitBtn = e.target.closest('.btn-visit');
+      const visitBtn = e.target.closest('.btn-visit, .sheet-visit');
       if (visitBtn) {
         const id = visitBtn.dataset.stopId;
         if (visited.has(id)) visited.delete(id);
         else visited.add(id);
         save.visited();
-        // iframe 재생성 없이 시각만 토글 + 미니맵/진행도 갱신
+        const isNow = visited.has(id);
+        // 본문 카드 시각 토글
         const card = document.getElementById(id);
-        if (card) card.classList.toggle('visited');
-        visitBtn.classList.toggle('checked');
-        visitBtn.textContent = visited.has(id) ? '✓ 방문함' : '☐ 방문';
+        if (card) card.classList.toggle('visited', isNow);
+        // 카드 버튼 갱신
+        const cardBtn = card?.querySelector('.btn-visit');
+        if (cardBtn) {
+          cardBtn.classList.toggle('checked', isNow);
+          cardBtn.textContent = isNow ? '✓ 방문함' : '☐ 방문';
+        }
+        // 시트 버튼/행 갱신
+        document.querySelectorAll(`.sheet-row[data-stop-id="${id}"]`).forEach((row) => {
+          row.classList.toggle('visited', isNow);
+          const sv = row.querySelector('.sheet-visit');
+          if (sv) sv.textContent = isNow ? '✓' : '☐';
+        });
         updateMap(buildSlotMap());
         updateProgress();
         if (window.V3Flex._updateNav) window.V3Flex._updateNav();

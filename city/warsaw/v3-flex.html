@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#b8420a">
+<title>바르샤바 가이드 투어 (v3 · 유연한 동선)</title>
+<meta name="description" content="드래그로 순서 변경, Pass로 건너뛰기. 구글 지도 임베드 자동 재계산.">
+<link rel="stylesheet" href="../../navi/assets/css/navi.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="../../navi/assets/icons/icon-192.png">
+<link rel="icon" type="image/png" href="../../navi/assets/icons/icon-192.png">
+</head>
+<body>
+
+<header class="tour-header">
+  <div class="kicker">Lecture 06 · Flex Tour</div>
+  <h1></h1>
+  <p class="subtitle"></p>
+  <div class="tour-meta">
+    <div class="item total-km"><div class="val">—</div><div class="key">총 도보</div></div>
+    <div class="item total-time"><div class="val">—</div><div class="key">소요</div></div>
+    <div class="item stops-count"><div class="val">—</div><div class="key">정거장</div></div>
+  </div>
+</header>
+
+<div id="ticket-card-slot"></div>
+
+<div class="progress-bar">
+  <button id="btn-scroll-top" class="btn-scroll-top" aria-label="맨 위로" title="맨 위로">⬆</button>
+  <span class="count">0 / 13</span>
+  <div class="track"><div class="fill"></div></div>
+  <button id="btn-edit-sheet" class="btn-edit-sheet" aria-label="동선 편집">▼ 동선 편집</button>
+  <button id="btn-reset-order" class="btn-reset-order" aria-label="순서 초기화" title="순서·Pass 초기화">↺</button>
+</div>
+
+<div id="sheet-backdrop" class="sheet-backdrop"></div>
+<section id="edit-sheet" class="edit-sheet" aria-label="동선 편집 시트">
+  <div class="sheet-help">
+    <strong>⠿</strong>를 길게 눌러 드래그 · <strong>✕</strong>로 동선 제외 · 변경 시 위 지도가 즉시 갱신됩니다.
+  </div>
+  <div id="sheet-list" class="sheet-list"></div>
+  <button id="btn-close-sheet" class="btn-close-sheet">▲ 닫기</button>
+</section>
+
+<div id="overview-map" class="overview-map" aria-label="전체 루트 지도"></div>
+
+<div style="padding: 10px 16px; font-size: 12px; color: var(--ink-soft); background: var(--bg-card); border-bottom: 1px solid var(--line); line-height: 1.55;">
+  💡 동선 변경은 위 <strong>▼ 동선 편집</strong> 버튼 안에서. 카드 오른쪽 위의 <strong>✕ Pass</strong>로도 정거장을 동선에서 뺄 수 있습니다.
+</div>
+
+<main>
+  <section id="stops-container" class="stops"></section>
+</main>
+
+<footer class="tour-footer">
+  <p>폴란드 교양강의 6회차 · 바르샤바 도보 투어 · <strong>v3 Flex</strong></p>
+  <p><a href="index.html">← 버전 비교</a> · <a href="v1-leaflet.html">v1</a> · <a href="v2-embed.html">v2</a></p>
+</footer>
+
+<nav class="bottom-nav" aria-label="정거장 네비게이션">
+  <button class="prev"><span class="label">← 이전</span><span class="target">—</span></button>
+  <div class="center">
+    <div class="current">01</div>
+    <div style="font-size: 10px; color: var(--ink-mute);">/ <span class="total">14</span></div>
+  </div>
+  <button class="next"><span class="label">다음 →</span><span class="target">—</span></button>
+</nav>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="stops-data.js"></script>
+<script src="../../navi/assets/js/navi-core.js"></script>
+<script src="../../navi/assets/js/v3-flex.js"></script>
+<script>
+  (function () {
+    const { NaviCore } = window;
+    NaviCore.fillHeader();
+    NaviCore.injectTicketCard(document.getElementById('ticket-card-slot'));
+    window.V3Flex.init();
+  })();
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch((e) => console.warn('SW failed:', e));
+    });
+  }
+</script>
+</body>
+</html>
