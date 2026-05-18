@@ -1,5 +1,5 @@
 // Service Worker — 오프라인 캐시 (Cache-First, network-fallback)
-const CACHE_VERSION = 'warsaw-tour-v7';
+const CACHE_VERSION = 'warsaw-tour-v8';
 const CORE_ASSETS = [
   './',
   './index.html',

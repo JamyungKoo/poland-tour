@@ -186,52 +186,35 @@
     if (polyline) { map.removeLayer(polyline); polyline = null; }
     markers.forEach((m) => map.removeLayer(m));
     markers = [];
-    const allInOrder = order.map((id) => stopMap[id]);
-    const active = allInOrder.filter((s) => !passed.has(s.id));
-    const passedList = allInOrder.filter((s) => passed.has(s.id));
+    const active = order.map((id) => stopMap[id]).filter((s) => !passed.has(s.id));
+    if (active.length === 0) return;
 
-    // 폴리라인: 활성 정거장만 연결
-    if (active.length > 0) {
-      polyline = L.polyline(active.map((s) => [s.lat, s.lon]), {
-        color: '#b8420a', weight: 4, opacity: 0.75,
-      }).addTo(map);
-    }
+    polyline = L.polyline(active.map((s) => [s.lat, s.lon]), {
+      color: '#b8420a', weight: 4, opacity: 0.75,
+    }).addTo(map);
 
-    // 활성 마커: 빨강 + 슬롯번호
+    // 활성 정거장만 마커. 방문함이면 초록 ✓, 미방문이면 빨강 + 슬롯번호
     active.forEach((s) => {
       const slot = slotMap.get(s.id) || '?';
       const nameKr = s.nameKr.replace(/\s*—\s*종착\s*$/, '');
+      const isVisited = visited.has(s.id);
+      const color = isVisited ? '#4a7c4e' : '#b8420a';
+      const inner = isVisited ? '✓' : slot;
       const icon = L.divIcon({
-        className: 'stop-marker',
-        html: `<div style="background:#b8420a;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)">${slot}</div>`,
+        className: 'stop-marker' + (isVisited ? ' visited' : ''),
+        html: `<div style="background:${color};color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)">${inner}</div>`,
         iconSize: [28, 28], iconAnchor: [14, 14],
       });
+      const visitedTag = isVisited ? ' <span style="color:#4a7c4e;font-size:11px">· 방문함</span>' : '';
       const m = L.marker([s.lat, s.lon], { icon }).addTo(map)
-        .bindPopup(`<strong>${slot}. ${nameKr}</strong><br><em style="color:#666;font-size:12px">${s.namePl}</em>`);
+        .bindPopup(`<strong>${slot}. ${nameKr}</strong>${visitedTag}<br><em style="color:#666;font-size:12px">${s.namePl}</em>`);
       markers.push(m);
     });
 
-    // Pass 마커: 초록 원 (번호 없음, 작게)
-    passedList.forEach((s) => {
-      const nameKr = s.nameKr.replace(/\s*—\s*종착\s*$/, '');
-      const icon = L.divIcon({
-        className: 'stop-marker passed',
-        html: `<div style="background:#4a7c4e;color:white;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;border:2px solid white;box-shadow:0 2px 4px rgba(0,0,0,0.25);opacity:0.85">✓</div>`,
-        iconSize: [22, 22], iconAnchor: [11, 11],
-      });
-      const m = L.marker([s.lat, s.lon], { icon }).addTo(map)
-        .bindPopup(`<strong style="color:#4a7c4e">Pass</strong> · ${nameKr}<br><em style="color:#666;font-size:12px">${s.namePl}</em>`);
-      markers.push(m);
-    });
-
-    // 줌: fitBounds만 (롤백 — setZoom +1 제거)
     if (active.length > 1) {
       map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
-    } else if (active.length === 1) {
+    } else {
       map.setView([active[0].lat, active[0].lon], 14);
-    } else if (passedList.length > 0) {
-      const bounds = L.latLngBounds(passedList.map((s) => [s.lat, s.lon]));
-      map.fitBounds(bounds, { padding: [30, 30] });
     }
   }
 
@@ -291,7 +274,14 @@
         if (visited.has(id)) visited.delete(id);
         else visited.add(id);
         save.visited();
-        render();
+        // iframe 재생성 없이 시각만 토글 + 미니맵/진행도 갱신
+        const card = document.getElementById(id);
+        if (card) card.classList.toggle('visited');
+        visitBtn.classList.toggle('checked');
+        visitBtn.textContent = visited.has(id) ? '✓ 방문함' : '☐ 방문';
+        updateMap(buildSlotMap());
+        updateProgress();
+        if (window.V3Flex._updateNav) window.V3Flex._updateNav();
         return;
       }
       const editBtn = e.target.closest('#btn-edit-sheet');
