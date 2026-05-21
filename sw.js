@@ -1,6 +1,6 @@
 // Poland Tour 통합 Service Worker (모든 도시 공용)
 // scope: /poland-tour/
-const CACHE_VERSION = 'poland-tour-v10';
+const CACHE_VERSION = 'poland-tour-v11';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -12,6 +12,7 @@ const CORE_ASSETS = [
   './city/zakopane.html',
   './city/warsaw/stops-data.js',
   './city/krakow/stops-data.js',
+  './city/zakopane/stops-data.js',
   './navi/assets/css/navi.css',
   './navi/assets/js/navi-core.js',
   './navi/assets/js/v3-flex.js',
