@@ -1,6 +1,6 @@
 // Poland Tour 통합 Service Worker (모든 도시 공용)
 // scope: /poland-tour/
-const CACHE_VERSION = 'poland-tour-v11';
+const CACHE_VERSION = 'poland-tour-v12';
 const CORE_ASSETS = [
   './',
   './index.html',
